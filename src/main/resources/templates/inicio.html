@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Inicio | Prácticas pedagógicas</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body>
+<header class="barra">
+    <a class="marca" th:href="@{/}">Prácticas pedagógicas</a>
+
+    <form th:action="@{/logout}" method="post">
+        <button type="submit" class="boton-secundario">
+            Cerrar sesión
+        </button>
+    </form>
+</header>
+
+<main class="contenedor">
+    <span class="etiqueta">Tu espacio de trabajo</span>
+    <h1>Bienvenido a la plataforma</h1>
+    <p class="texto-secundario cuenta">
+        Sesión iniciada como <strong th:text="${correo}"></strong>
+    </p>
+
+    <section th:if="${esAdmin}" class="cuadricula">
+        <article class="tarjeta">
+            <h2>Usuarios</h2>
+            <p class="texto-secundario">
+                Registra las cuentas que utilizarán la plataforma.
+            </p>
+            <a class="boton" th:href="@{/admin/usuarios/nuevo}">
+                Crear usuario
+            </a>
+        </article>
+
+        <article class="tarjeta">
+            <h2>Roles y acceso</h2>
+            <p class="texto-secundario">
+                Asigna o retira los roles de los usuarios.
+            </p>
+            <a class="boton" th:href="@{/admin/roles}">
+                Gestionar roles
+            </a>
+        </article>
+    </section>
+
+    <section th:unless="${esAdmin}" class="tarjeta">
+        <h2>Tu cuenta está disponible</h2>
+        <p class="texto-secundario">
+            Las funciones de portafolio y seguimiento estarán
+            disponibles en próximos avances de la plataforma.
+        </p>
+    </section>
+</main>
+</body>
+</html>

@@ -3,10 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
     <title>Gestionar roles</title>
 </head>
 <body>
-<main>
+<header class="barra">
+    <a class="marca" th:href="@{/}">Prácticas pedagógicas</a>
+
+    <form th:action="@{/logout}" method="post">
+        <button type="submit" class="boton-secundario">
+            Cerrar sesión
+        </button>
+    </form>
+</header>
+<main class="contenedor tarjeta">
     <h1>Gestionar roles de usuario</h1>
     <p>
         <a th:href="@{/admin/usuarios/nuevo}">Crear usuario</a>
@@ -67,9 +77,6 @@
 
     <hr>
 
-    <form th:action="@{/logout}" method="post">
-        <button type="submit">Cerrar sesión</button>
-    </form>
 </main>
 </body>
 </html>

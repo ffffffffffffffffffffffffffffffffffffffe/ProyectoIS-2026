@@ -41,8 +41,15 @@ public class SecurityConfig {
                         .hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
-                .formLogin(form -> form.permitAll())
-                .logout(logout -> logout.permitAll())
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/", true)
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutSuccessUrl("/login?logout")
+                        .permitAll()
+                )
                 .sessionManagement(session -> session
                         .maximumSessions(-1)
                         .sessionRegistry(sessionRegistry)
