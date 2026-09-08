@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Crear usuario</title>
+</head>
+<body>
+<main>
+    <h1>Crear usuario</h1>
+
+    <form th:action="@{/admin/usuarios}"
+          th:object="${form}"
+          method="post">
+
+        <ul th:if="${#fields.hasAnyErrors()}" role="alert">
+            <li th:each="error : ${#fields.allErrors()}"
+                th:text="${error}"></li>
+        </ul>
+
+        <p>
+            <label for="nombre">Nombre</label>
+            <input id="nombre"
+                   type="text"
+                   th:field="*{nombre}"
+                   maxlength="100"
+                   required>
+        </p>
+
+        <p>
+            <label for="correo">Correo</label>
+            <input id="correo"
+                   type="email"
+                   th:field="*{correo}"
+                   maxlength="150"
+                   required>
+        </p>
+
+        <p>
+            <label for="password">Contraseña inicial</label>
+            <input id="password"
+                   name="password"
+                   type="password"
+                   autocomplete="new-password"
+                   minlength="12"
+                   maxlength="72"
+                   required>
+        </p>
+
+        <p>
+            Usa al menos 12 caracteres. Si hay un error,
+            vuelve a ingresar la contraseña.
+        </p>
+
+        <button type="submit">Crear usuario</button>
+    </form>
+
+    <p>
+        <a th:href="@{/admin/roles}">Volver a gestionar roles</a>
+    </p>
+</main>
+</body>
+</html>
