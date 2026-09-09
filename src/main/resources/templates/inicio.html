@@ -57,11 +57,23 @@
 
     </section>
 
-    <section th:unless="${esAdmin}" class="tarjeta">
+    <section th:if="${esEstudiante}" class="cuadricula">
+        <article class="tarjeta">
+            <h2>Mis portafolios</h2>
+            <p class="texto-secundario">
+                Crea y consulta tus portafolios de práctica.
+            </p>
+            <a class="boton" th:href="@{/portafolios}">
+                Ver mis portafolios
+            </a>
+        </article>
+    </section>
+
+    <section th:if="${!esAdmin and !esEstudiante}"
+             class="tarjeta bloque-separado">
         <h2>Tu cuenta está disponible</h2>
         <p class="texto-secundario">
-            Las funciones de portafolio y seguimiento estarán
-            disponibles en próximos avances de la plataforma.
+            Las opciones de seguimiento estarán disponibles próximamente.
         </p>
     </section>
 </main>

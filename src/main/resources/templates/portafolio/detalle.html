@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mi portafolio | Prácticas pedagógicas</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body>
+<header class="barra">
+    <a class="marca" th:href="@{/}">Prácticas pedagógicas</a>
+
+    <form th:action="@{/logout}" method="post">
+        <button type="submit" class="boton-secundario">
+            Cerrar sesión
+        </button>
+    </form>
+</header>
+
+<main class="contenedor">
+    <p>
+        <a th:href="@{/portafolios}">Volver a mis portafolios</a>
+    </p>
+
+    <p th:if="${mensaje}"
+       th:text="${mensaje}"
+       class="aviso exito"
+       role="status"></p>
+
+    <section class="tarjeta">
+        <span class="etiqueta">Portafolio de práctica</span>
+        <h1 th:text="${portafolio.asignatura}"></h1>
+
+        <p>
+            Estudiante:
+            <strong th:text="${portafolio.estudiante}"></strong>
+        </p>
+
+        <p>
+            Periodo:
+            <strong th:text="${portafolio.periodo}"></strong>
+        </p>
+
+        <p class="texto-secundario">
+            Fecha de creación:
+            <span th:text="${#temporals.format(
+                portafolio.fechaCreacion, 'dd/MM/yyyy HH:mm'
+            )}"></span>
+        </p>
+    </section>
+    <p th:if="${error}"
+       th:text="${error}"
+       class="aviso error"
+       role="alert"></p>
+
+    <section class="tarjeta bloque-separado">
+        <h2>Subir evidencia</h2>
+
+        <p class="texto-secundario">
+            Selecciona un archivo PDF de hasta 10 MB.
+        </p>
+
+        <form th:action="@{/portafolios/{id}/evidencias(id=${portafolio.id})}"
+              method="post"
+              enctype="multipart/form-data">
+
+            <div class="campo">
+                <label for="titulo">Título</label>
+                <input id="titulo"
+                       name="titulo"
+                       type="text"
+                       maxlength="150"
+                       placeholder="Ej.: Informe de observación"
+                       required>
+            </div>
+
+            <div class="campo">
+                <label for="actividad">Actividad</label>
+                <input id="actividad"
+                       name="actividad"
+                       type="text"
+                       maxlength="150"
+                       placeholder="Ej.: Observación de clase"
+                       required>
+            </div>
+
+            <div class="campo">
+                <label for="descripcion">Descripción opcional</label>
+                <textarea id="descripcion"
+                          name="descripcion"
+                          rows="4"
+                          maxlength="1000"></textarea>
+            </div>
+
+            <div class="campo">
+                <label for="archivo">Archivo PDF</label>
+                <input id="archivo"
+                       name="archivo"
+                       type="file"
+                       accept=".pdf,application/pdf"
+                       required>
+            </div>
+
+            <button type="submit">Subir evidencia</button>
+        </form>
+    </section>
+
+    <section class="tarjeta bloque-separado">
+        <h2>Evidencias registradas</h2>
+
+        <p th:if="${#lists.isEmpty(evidencias)}"
+           class="texto-secundario">
+            Todavía no hay evidencias en este portafolio.
+        </p>
+
+        <div class="tabla-contenedor"
+             th:unless="${#lists.isEmpty(evidencias)}">
+            <table>
+                <thead>
+                <tr>
+                    <th scope="col">Título</th>
+                    <th scope="col">Actividad</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col">Archivo</th>
+                    <th scope="col">Tamaño</th>
+                    <th scope="col">Fecha</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="evidencia : ${evidencias}">
+                    <td th:text="${evidencia.titulo}"></td>
+                    <td th:text="${evidencia.actividad}"></td>
+                    <td th:text="${evidencia.descripcion ?: 'Sin descripción'}"></td>
+                    <td th:text="${evidencia.nombreOriginal}"></td>
+                    <td th:text="|${evidencia.tamanoBytes} bytes|"></td>
+                    <td th:text="${#temporals.format(
+                    evidencia.fechaSubida, 'dd/MM/yyyy HH:mm'
+                )}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+</body>
+</html>

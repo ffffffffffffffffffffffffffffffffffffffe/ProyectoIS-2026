@@ -228,4 +228,19 @@ a:focus-visible {
     tbody tr:hover {
         background: #f8faff;
     }
+
+    textarea {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1px solid #bdcad8;
+        border-radius: 9px;
+        font: inherit;
+        color: inherit;
+        resize: vertical;
+    }
+
+    textarea:focus {
+        outline: 3px solid #d4e4ff;
+        border-color: #2359b8;
+    }
 }

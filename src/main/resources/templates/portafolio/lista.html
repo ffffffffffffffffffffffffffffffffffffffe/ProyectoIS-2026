@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mis portafolios | Prácticas pedagógicas</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body>
+<header class="barra">
+    <a class="marca" th:href="@{/}">Prácticas pedagógicas</a>
+
+    <form th:action="@{/logout}" method="post">
+        <button type="submit" class="boton-secundario">
+            Cerrar sesión
+        </button>
+    </form>
+</header>
+
+<main class="contenedor">
+    <span class="etiqueta">Espacio del estudiante</span>
+    <h1>Mis portafolios</h1>
+    <p class="texto-secundario">
+        Organiza tu práctica por asignatura y periodo.
+    </p>
+
+    <p th:if="${error}"
+       th:text="${error}"
+       class="aviso error"
+       role="alert"></p>
+
+    <section class="tarjeta">
+        <h2>Crear portafolio</h2>
+
+        <form th:action="@{/portafolios}" method="post">
+            <div class="campo">
+                <label for="asignatura">Asignatura</label>
+                <input id="asignatura"
+                       name="asignatura"
+                       type="text"
+                       th:value="${asignaturaIngresada}"
+                       placeholder="Ej.: Práctica pedagógica"
+                       maxlength="100"
+                       required>
+            </div>
+
+            <div class="campo">
+                <label for="periodo">Periodo de práctica</label>
+                <input id="periodo"
+                       name="periodo"
+                       type="text"
+                       th:value="${periodoIngresado}"
+                       placeholder="Ej.: 2026-2"
+                       maxlength="20"
+                       required>
+            </div>
+
+            <button type="submit">Crear portafolio</button>
+        </form>
+    </section>
+
+    <section class="bloque-separado">
+        <h2>Portafolios registrados</h2>
+
+        <p th:if="${#lists.isEmpty(portafolios)}"
+           class="aviso">
+            Todavía no tienes portafolios. Crea el primero con el formulario.
+        </p>
+
+        <div class="cuadricula">
+            <article th:each="portafolio : ${portafolios}"
+                     class="tarjeta">
+
+                <h2 th:text="${portafolio.asignatura}"></h2>
+
+                <p>
+                    Periodo:
+                    <strong th:text="${portafolio.periodo}"></strong>
+                </p>
+
+                <p class="texto-secundario">
+                    Creado:
+                    <span th:text="${#temporals.format(
+                        portafolio.fechaCreacion, 'dd/MM/yyyy HH:mm'
+                    )}"></span>
+                </p>
+
+                <a class="boton"
+                   th:href="@{/portafolios/{id}(id=${portafolio.id})}">
+                    Abrir portafolio
+                </a>
+            </article>
+        </div>
+    </section>
+
+    <p><a th:href="@{/}">Volver al inicio</a></p>
+</main>
+</body>
+</html>

@@ -21,6 +21,14 @@ public class InicioController {
                 );
 
         model.addAttribute("esAdmin", esAdmin);
+
+        boolean esEstudiante = authentication.getAuthorities().stream()
+                .anyMatch(permiso ->
+                        permiso.getAuthority().equals("ROLE_ESTUDIANTE")
+                );
+
+        model.addAttribute("esEstudiante", esEstudiante);
+
         return "inicio";
     }
 
