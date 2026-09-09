@@ -44,6 +44,17 @@
                 Gestionar roles
             </a>
         </article>
+
+        <article class="tarjeta">
+            <h2>Asignaciones</h2>
+            <p class="texto-secundario">
+                Gestiona los responsables del seguimiento de cada estudiante.
+            </p>
+            <a class="boton" th:href="@{/admin/asignaciones}">
+                Gestionar asignaciones
+            </a>
+        </article>
+
     </section>
 
     <section th:unless="${esAdmin}" class="tarjeta">

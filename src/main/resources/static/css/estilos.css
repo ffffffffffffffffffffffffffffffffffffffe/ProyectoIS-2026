@@ -195,4 +195,37 @@ a:focus-visible {
     .contenedor {
         margin-top: 28px;
     }
+    .bloque-separado {
+        margin-top: 24px;
+    }
+
+    .tabla-contenedor {
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: .9rem;
+    }
+
+    th,
+    td {
+        padding: 14px 12px;
+        text-align: left;
+        border-bottom: 1px solid #dde5ef;
+    }
+
+    th {
+        background: #f3f6fa;
+        font-weight: 700;
+    }
+
+    td {
+        overflow-wrap: anywhere;
+    }
+
+    tbody tr:hover {
+        background: #f8faff;
+    }
 }

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Asignaciones | Prácticas pedagógicas</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body>
+<header class="barra">
+    <a class="marca" th:href="@{/}">Prácticas pedagógicas</a>
+
+    <form th:action="@{/logout}" method="post">
+        <button type="submit" class="boton-secundario">
+            Cerrar sesión
+        </button>
+    </form>
+</header>
+
+<main class="contenedor">
+    <span class="etiqueta">Administración</span>
+    <h1>Asignaciones de seguimiento</h1>
+    <p class="texto-secundario">
+        Relaciona estudiantes con sus responsables por asignatura y periodo.
+    </p>
+
+    <p th:if="${mensaje}" th:text="${mensaje}"
+       class="aviso exito" role="status"></p>
+
+    <p th:if="${error}" th:text="${error}"
+       class="aviso error" role="alert"></p>
+
+    <section class="tarjeta">
+        <h2>Crear o reactivar asignación</h2>
+
+        <p class="aviso"
+           th:if="${#lists.isEmpty(estudiantes)
+                    or #lists.isEmpty(responsables)}">
+            Necesitas al menos un estudiante y un responsable activos.
+            Puedes crear sus cuentas y asignarles roles desde la administración.
+        </p>
+
+        <form th:unless="${#lists.isEmpty(estudiantes)
+                         or #lists.isEmpty(responsables)}"
+              th:action="@{/admin/asignaciones}"
+              method="post">
+
+            <div class="campo">
+                <label for="estudianteId">Estudiante</label>
+                <select id="estudianteId" name="estudianteId" required>
+                    <option value="" disabled selected>Selecciona un estudiante</option>
+                    <option th:each="usuario : ${estudiantes}"
+                            th:value="${usuario.id}"
+                            th:text="|${usuario.nombre} (${usuario.correo})|">
+                    </option>
+                </select>
+            </div>
+
+            <div class="campo">
+                <label for="responsableId">Responsable</label>
+                <select id="responsableId" name="responsableId" required>
+                    <option value="" disabled selected>Selecciona un responsable</option>
+                    <option th:each="usuario : ${responsables}"
+                            th:value="${usuario.id}"
+                            th:text="|${usuario.nombre} (${usuario.correo})|">
+                    </option>
+                </select>
+            </div>
+
+            <div class="campo">
+                <label for="tipoRelacion">Tipo de relación</label>
+                <select id="tipoRelacion" name="tipoRelacion" required>
+                    <option value="" disabled selected>Selecciona una relación</option>
+                    <option th:each="tipo : ${tipos}"
+                            th:value="${tipo}"
+                            th:text="${#strings.replace(tipo.name(), '_', ' ')}">
+                    </option>
+                </select>
+            </div>
+
+            <div class="campo">
+                <label for="asignatura">Asignatura</label>
+                <input id="asignatura" name="asignatura"
+                       type="text" maxlength="100"
+                       placeholder="Ej.: Práctica pedagógica" required>
+            </div>
+
+            <div class="campo">
+                <label for="periodo">Periodo</label>
+                <input id="periodo" name="periodo"
+                       type="text" maxlength="20"
+                       placeholder="Ej.: 2026-2" required>
+            </div>
+
+            <button type="submit">Guardar asignación</button>
+        </form>
+    </section>
+
+    <section class="tarjeta bloque-separado">
+        <h2>Asignaciones registradas</h2>
+
+        <p th:if="${#lists.isEmpty(asignaciones)}"
+           class="texto-secundario">
+            Todavía no hay asignaciones registradas.
+        </p>
+
+        <div class="tabla-contenedor"
+             th:unless="${#lists.isEmpty(asignaciones)}">
+            <table>
+                <thead>
+                <tr>
+                    <th scope="col">Estudiante</th>
+                    <th scope="col">Responsable</th>
+                    <th scope="col">Relación</th>
+                    <th scope="col">Asignatura</th>
+                    <th scope="col">Periodo</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Acción</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="asignacion : ${asignaciones}">
+                    <td th:text="${asignacion.estudiante}"></td>
+                    <td th:text="${asignacion.responsable}"></td>
+                    <td th:text="${#strings.replace(asignacion.tipo, '_', ' ')}"></td>
+                    <td th:text="${asignacion.asignatura}"></td>
+                    <td th:text="${asignacion.periodo}"></td>
+                    <td th:text="${asignacion.activo ? 'Activa' : 'Inactiva'}"></td>
+                    <td>
+                        <form th:if="${asignacion.activo}"
+                              th:action="@{/admin/asignaciones/{id}/desactivar(id=${asignacion.id})}"
+                              method="post">
+                            <button type="submit" class="boton-secundario">
+                                Desactivar
+                            </button>
+                        </form>
+                        <span th:unless="${asignacion.activo}">—</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <p><a th:href="@{/}">Volver al inicio</a></p>
+</main>
+</body>
+</html>
