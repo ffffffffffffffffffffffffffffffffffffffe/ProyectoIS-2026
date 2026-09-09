@@ -22,4 +22,12 @@ public interface AsignacionSeguimientoRepository
 
     List<AsignacionSeguimiento>
     findByEstudiante_IdAndActivoTrue(Long estudianteId);
+
+    List<AsignacionSeguimiento>
+    findByResponsable_IdAndEstudiante_IdAndAsignaturaAndPeriodoAndActivoTrue(
+            Long responsableId,
+            Long estudianteId,
+            String asignatura,
+            String periodo
+    );
 }

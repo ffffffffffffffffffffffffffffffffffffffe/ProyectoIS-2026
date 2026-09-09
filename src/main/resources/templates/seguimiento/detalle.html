@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Portafolio del estudiante | Seguimiento</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body>
+<header class="barra">
+    <a class="marca" th:href="@{/}">Prácticas pedagógicas</a>
+    <form th:action="@{/logout}" method="post">
+        <button class="boton-secundario" type="submit">Cerrar sesión</button>
+    </form>
+</header>
+
+<main class="contenedor">
+    <p><a th:href="@{/seguimiento}">Volver a seguimiento</a></p>
+
+    <section class="tarjeta">
+        <span class="etiqueta">Portafolio del estudiante</span>
+        <h1 th:text="${detalle.portafolio.estudiante}"></h1>
+        <p class="cuenta" th:text="${detalle.portafolio.correo}"></p>
+        <p th:text="${detalle.portafolio.asignatura}"></p>
+        <p>
+            Periodo:
+            <strong th:text="${detalle.portafolio.periodo}"></strong>
+        </p>
+    </section>
+
+    <section class="tarjeta bloque-separado">
+        <h2>Evidencias</h2>
+
+        <p th:if="${#lists.isEmpty(detalle.evidencias)}"
+           class="texto-secundario">
+            El estudiante todavía no ha registrado evidencias.
+        </p>
+
+        <div class="tabla-contenedor"
+             th:unless="${#lists.isEmpty(detalle.evidencias)}">
+            <table>
+                <thead>
+                <tr>
+                    <th scope="col">Título</th>
+                    <th scope="col">Actividad</th>
+                    <th scope="col">Archivo</th>
+                    <th scope="col">Fecha</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="evidencia : ${detalle.evidencias}">
+                    <td th:text="${evidencia.titulo}"></td>
+                    <td th:text="${evidencia.actividad}"></td>
+                    <td th:text="${evidencia.nombreOriginal}"></td>
+                    <td th:text="${#temporals.format(
+                        evidencia.fechaSubida, 'dd/MM/yyyy HH:mm'
+                    )}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+</body>
+</html>

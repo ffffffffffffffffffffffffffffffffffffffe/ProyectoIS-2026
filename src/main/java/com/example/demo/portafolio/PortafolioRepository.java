@@ -22,4 +22,10 @@ public interface PortafolioRepository
             String asignatura,
             String periodo
     );
+
+    List<Portafolio> findByEstudiante_IdAndAsignaturaAndPeriodo(
+            Long estudianteId,
+            String asignatura,
+            String periodo
+    );
 }

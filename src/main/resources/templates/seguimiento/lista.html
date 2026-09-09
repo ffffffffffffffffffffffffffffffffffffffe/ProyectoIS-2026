@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Seguimiento | Prácticas pedagógicas</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body>
+<header class="barra">
+    <a class="marca" th:href="@{/}">Prácticas pedagógicas</a>
+    <form th:action="@{/logout}" method="post">
+        <button class="boton-secundario" type="submit">Cerrar sesión</button>
+    </form>
+</header>
+
+<main class="contenedor">
+    <span class="etiqueta">Seguimiento de estudiantes</span>
+    <h1>Portafolios asignados</h1>
+
+    <p class="texto-secundario">
+        Consulta los portafolios disponibles según tus asignaciones activas.
+    </p>
+
+    <p th:if="${#lists.isEmpty(portafolios)}" class="aviso">
+        No hay portafolios disponibles para tus asignaciones.
+        El estudiante debe haber creado su portafolio para la asignatura
+        y periodo correspondientes.
+    </p>
+
+    <section class="cuadricula">
+        <article th:each="portafolio : ${portafolios}" class="tarjeta">
+            <h2 th:text="${portafolio.estudiante}"></h2>
+            <p class="texto-secundario cuenta" th:text="${portafolio.correo}"></p>
+            <p th:text="${portafolio.asignatura}"></p>
+            <p>Periodo: <strong th:text="${portafolio.periodo}"></strong></p>
+
+            <a class="boton"
+               th:href="@{/seguimiento/portafolios/{id}(id=${portafolio.id})}">
+                Consultar portafolio
+            </a>
+        </article>
+    </section>
+
+    <p><a th:href="@{/}">Volver al inicio</a></p>
+</main>
+</body>
+</html>
