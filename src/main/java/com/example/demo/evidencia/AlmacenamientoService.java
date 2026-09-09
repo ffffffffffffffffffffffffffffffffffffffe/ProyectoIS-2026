@@ -3,6 +3,8 @@ package com.example.demo.evidencia;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -183,5 +185,26 @@ public class AlmacenamientoService {
             String nombreOriginal,
             String tipoContenido,
             long tamanoBytes) {
+    }
+
+    public Resource cargar(String clave) {
+        Path ruta = resolverClave(clave);
+
+        try {
+            Resource recurso = new UrlResource(ruta.toUri());
+
+            if (!Files.isRegularFile(ruta) || !recurso.isReadable()) {
+                throw new IllegalStateException(
+                        "El archivo no está disponible en el almacenamiento."
+                );
+            }
+
+            return recurso;
+        } catch (IOException exception) {
+            throw new IllegalStateException(
+                    "No se pudo acceder al archivo.",
+                    exception
+            );
+        }
     }
 }

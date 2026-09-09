@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.core.io.Resource;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -213,5 +214,41 @@ public class EvidenciaService {
             String nombreOriginal,
             long tamanoBytes,
             LocalDateTime fechaSubida) {
+    }
+
+    @Transactional(readOnly = true)
+    public DescargaEvidencia descargarPropia(Long evidenciaId) {
+        Usuario estudiante = obtenerEstudianteActual();
+
+        if (evidenciaId == null || evidenciaId <= 0) {
+            throw new IllegalArgumentException(
+                    "El identificador de la evidencia no es válido."
+            );
+        }
+
+        Evidencia evidencia = evidenciaRepository
+                .findByIdAndPortafolio_Estudiante_Id(
+                        evidenciaId,
+                        estudiante.getId()
+                )
+                .orElseThrow(() ->
+                        new AccessDeniedException(
+                                "La evidencia no está disponible para tu cuenta."
+                        )
+                );
+
+        Resource recurso = almacenamientoService.cargar(
+                evidencia.getClaveAlmacenamiento()
+        );
+
+        return new DescargaEvidencia(
+                recurso,
+                evidencia.getNombreOriginal()
+        );
+    }
+
+    public record DescargaEvidencia(
+            Resource recurso,
+            String nombreOriginal) {
     }
 }

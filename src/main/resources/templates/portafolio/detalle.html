@@ -124,6 +124,7 @@
                     <th scope="col">Archivo</th>
                     <th scope="col">Tamaño</th>
                     <th scope="col">Fecha</th>
+                    <th scope="col">Acción</th>
                 </tr>
                 </thead>
 
@@ -134,14 +135,52 @@
                     <td th:text="${evidencia.descripcion ?: 'Sin descripción'}"></td>
                     <td th:text="${evidencia.nombreOriginal}"></td>
                     <td th:text="|${evidencia.tamanoBytes} bytes|"></td>
+
                     <td th:text="${#temporals.format(
-                    evidencia.fechaSubida, 'dd/MM/yyyy HH:mm'
-                )}"></td>
+            evidencia.fechaSubida, 'dd/MM/yyyy HH:mm'
+        )}"></td>
+
+                    <td>
+                        <a class="boton boton-secundario"
+                           th:href="@{/evidencias/{id}/descargar(id=${evidencia.id})}">
+                            Descargar PDF
+                        </a>
+                    </td>
                 </tr>
                 </tbody>
             </table>
         </div>
     </section>
 </main>
+<script>
+    const archivoInput = document.getElementById("archivo");
+
+    if (archivoInput) {
+        const validarTamano = () => {
+            const archivo = archivoInput.files[0];
+            const maximo = 10 * 1024 * 1024;
+
+            archivoInput.setCustomValidity(
+                archivo && archivo.size > maximo
+                    ? "El PDF no puede superar 10 MB."
+                    : ""
+            );
+        };
+
+        archivoInput.addEventListener("change", () => {
+            validarTamano();
+            archivoInput.reportValidity();
+        });
+
+        archivoInput.form.addEventListener("submit", (evento) => {
+            validarTamano();
+
+            if (!archivoInput.checkValidity()) {
+                evento.preventDefault();
+                archivoInput.reportValidity();
+            }
+        });
+    }
+</script>
 </body>
 </html>
