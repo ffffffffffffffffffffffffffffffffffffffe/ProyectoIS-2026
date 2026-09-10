@@ -7,15 +7,7 @@
     <title>Crear usuario</title>
 </head>
 <body>
-<header class="barra">
-    <a class="marca" th:href="@{/}">Prácticas pedagógicas</a>
-
-    <form th:action="@{/logout}" method="post">
-        <button type="submit" class="boton-secundario">
-            Cerrar sesión
-        </button>
-    </form>
-</header>
+<header th:replace="~{fragmentos/barra :: barra}"></header>
 <main class="contenedor tarjeta">
     <h1>Crear usuario</h1>
 
@@ -52,13 +44,13 @@
                    name="password"
                    type="password"
                    autocomplete="new-password"
-                   minlength="12"
+                   minlength="8"
                    maxlength="72"
                    required>
         </p>
 
-        <p>
-            Usa al menos 12 caracteres. Si hay un error,
+        <p class="texto-secundario">
+            Usa al menos 8 caracteres. Si hay un error,
             vuelve a ingresar la contraseña.
         </p>
 

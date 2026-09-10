@@ -10,6 +10,11 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import com.example.demo.usuario.UsuarioRepository;
+import org.springframework.data.domain.Sort;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin/usuarios")
@@ -17,9 +22,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class AdminUsuarioController {
 
     private final UsuarioService usuarioService;
+    private final UsuarioRepository usuarioRepository;
 
-    public AdminUsuarioController(UsuarioService usuarioService) {
+    public AdminUsuarioController(
+            UsuarioService usuarioService,
+            UsuarioRepository usuarioRepository) {
         this.usuarioService = usuarioService;
+        this.usuarioRepository = usuarioRepository;
     }
 
     @GetMapping("/nuevo")
@@ -65,5 +74,35 @@ public class AdminUsuarioController {
         );
 
         return "redirect:/admin/roles";
+    }
+
+    @GetMapping
+    @Transactional(readOnly = true)
+    public String listarMiembros(Model model) {
+        var miembros = usuarioRepository
+                .findAll(Sort.by("nombre").ascending().and(Sort.by("id")))
+                .stream()
+                .map(usuario -> new MiembroFila(
+                        usuario.getId(),
+                        usuario.getNombre(),
+                        usuario.getCorreo(),
+                        usuario.getRoles().stream()
+                                .map(rol -> rol.getNombre())
+                                .sorted()
+                                .toList(),
+                        usuario.isActivo()
+                ))
+                .toList();
+
+        model.addAttribute("miembros", miembros);
+        return "admin/usuarios";
+    }
+
+    public record MiembroFila(
+            Long id,
+            String nombre,
+            String correo,
+            List<String> roles,
+            boolean activo) {
     }
 }

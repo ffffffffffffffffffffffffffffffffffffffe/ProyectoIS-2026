@@ -7,12 +7,7 @@
     <link rel="stylesheet" th:href="@{/css/estilos.css}">
 </head>
 <body>
-<header class="barra">
-    <a class="marca" th:href="@{/}">Prácticas pedagógicas</a>
-    <form th:action="@{/logout}" method="post">
-        <button class="boton-secundario" type="submit">Cerrar sesión</button>
-    </form>
-</header>
+<header th:replace="~{fragmentos/barra :: barra}"></header>
 
 <main class="contenedor">
     <p><a th:href="@{/seguimiento}">Volver a seguimiento</a></p>

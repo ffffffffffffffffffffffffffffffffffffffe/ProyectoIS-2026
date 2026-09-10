@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+<header th:fragment="barra" class="barra">
+    <a class="marca" th:href="@{/}">
+        Prácticas pedagógicas
+    </a>
+
+    <details class="menu-usuario"
+             th:if="${nombreUsuarioActual != null}">
+        <summary>
+            <span class="saludo-usuario"
+                  th:text="|Bienvenid@, ${nombreUsuarioActual}|">
+                Bienvenid@
+            </span>
+            <span class="flecha-menu" aria-hidden="true">▾</span>
+        </summary>
+
+        <div class="menu-usuario-panel">
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="opcion-cerrar">
+                    Cerrar sesión
+                </button>
+            </form>
+        </div>
+    </details>
+</header>
+</body>
+</html>

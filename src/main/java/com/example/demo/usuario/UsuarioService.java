@@ -29,7 +29,8 @@ public class UsuarioService {
     public Long registrar(
             @NotBlank @Size(max = 100) String nombre,
             @NotBlank @Email @Size(max = 150) String correo,
-            @NotBlank @Size(min = 12, max = 72) String password) {
+            @NotBlank
+            @Size(min = 8, max = 72, message = "La contraseña debe tener mínimo 8 caracteres") String password) {
 
         if (password.getBytes(StandardCharsets.UTF_8).length > 72) {
             throw new IllegalArgumentException(

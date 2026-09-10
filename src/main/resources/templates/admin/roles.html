@@ -7,15 +7,7 @@
     <title>Gestionar roles</title>
 </head>
 <body>
-<header class="barra">
-    <a class="marca" th:href="@{/}">Prácticas pedagógicas</a>
-
-    <form th:action="@{/logout}" method="post">
-        <button type="submit" class="boton-secundario">
-            Cerrar sesión
-        </button>
-    </form>
-</header>
+<header th:replace="~{fragmentos/barra :: barra}"></header>
 <main class="contenedor tarjeta">
     <h1>Gestionar roles de usuario</h1>
     <p>

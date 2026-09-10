@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Miembros | Prácticas pedagógicas</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body>
+<header th:replace="~{fragmentos/barra :: barra}"></header>
+
+<main class="contenedor">
+    <span class="etiqueta">Administración</span>
+
+    <div class="encabezado-pagina">
+        <div>
+            <h1>Miembros del sistema</h1>
+            <p class="texto-secundario">
+                Consulta las cuentas, sus roles y su estado.
+            </p>
+        </div>
+
+        <div class="acciones">
+            <a class="boton" th:href="@{/admin/usuarios/nuevo}">
+                Crear usuario
+            </a>
+            <a class="boton boton-secundario" th:href="@{/admin/roles}">
+                Gestionar roles
+            </a>
+        </div>
+    </div>
+
+    <section class="tarjeta">
+        <p class="texto-secundario">
+            Total de miembros:
+            <strong th:text="${#lists.size(miembros)}">0</strong>
+        </p>
+
+        <p th:if="${#lists.isEmpty(miembros)}">
+            No hay miembros registrados.
+        </p>
+
+        <div class="tabla-contenedor"
+             th:unless="${#lists.isEmpty(miembros)}">
+            <table>
+                <caption class="solo-lectores">
+                    Miembros registrados, roles y estado de sus cuentas
+                </caption>
+                <thead>
+                <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Correo</th>
+                    <th scope="col">Roles</th>
+                    <th scope="col">Estado</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="miembro : ${miembros}">
+                    <td th:text="${miembro.nombre}"></td>
+                    <td th:text="${miembro.correo}"></td>
+                    <td>
+                        <span th:if="${#lists.isEmpty(miembro.roles)}"
+                              class="texto-secundario">
+                            Sin roles
+                        </span>
+
+                        <span th:each="rol : ${miembro.roles}"
+                              class="insignia"
+                              th:text="${rol}">
+                        </span>
+                    </td>
+                    <td>
+                        <span class="insignia"
+                              th:classappend="${miembro.activo}
+                                  ? 'estado-activo' : 'estado-inactivo'"
+                              th:text="${miembro.activo}
+                                  ? 'Activo' : 'Inactivo'">
+                        </span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+</body>
+</html>
