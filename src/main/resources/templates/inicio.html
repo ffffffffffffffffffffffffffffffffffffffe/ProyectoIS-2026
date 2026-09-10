@@ -24,6 +24,19 @@
         Sesión iniciada como <strong th:text="${correo}"></strong>
     </p>
 
+    <section th:if="${esResponsable}" class="cuadricula">
+        <article class="tarjeta">
+            <h2>Seguimiento de estudiantes</h2>
+            <p class="texto-secundario">
+                Consulta los portafolios y evidencias disponibles
+                según tus asignaciones.
+            </p>
+            <a class="boton" th:href="@{/seguimiento}">
+                Ver portafolios asignados
+            </a>
+        </article>
+    </section>
+
     <section th:if="${esAdmin}" class="cuadricula">
         <article class="tarjeta">
             <h2>Usuarios</h2>
@@ -69,7 +82,7 @@
         </article>
     </section>
 
-    <section th:if="${!esAdmin and !esEstudiante}"
+    <section th:if="${!esAdmin and !esEstudiante and !esResponsable}"
              class="tarjeta bloque-separado">
         <h2>Tu cuenta está disponible</h2>
         <p class="texto-secundario">

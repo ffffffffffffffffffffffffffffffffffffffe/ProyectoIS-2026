@@ -8,6 +8,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.example.demo.evidencia.AlmacenamientoService;
+import org.springframework.core.io.Resource;
 
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
@@ -27,18 +29,21 @@ public class SeguimientoService {
     private final PortafolioRepository portafolioRepository;
     private final EvidenciaRepository evidenciaRepository;
     private final AccesoSeguimientoService accesoService;
+    private final AlmacenamientoService almacenamientoService;
 
     public SeguimientoService(
             UsuarioRepository usuarioRepository,
             AsignacionSeguimientoRepository asignacionRepository,
             PortafolioRepository portafolioRepository,
             EvidenciaRepository evidenciaRepository,
-            AccesoSeguimientoService accesoService) {
+            AccesoSeguimientoService accesoService,
+            AlmacenamientoService almacenamientoService) {
         this.usuarioRepository = usuarioRepository;
         this.asignacionRepository = asignacionRepository;
         this.portafolioRepository = portafolioRepository;
         this.evidenciaRepository = evidenciaRepository;
         this.accesoService = accesoService;
+        this.almacenamientoService = almacenamientoService;
     }
 
     @Transactional(readOnly = true)
@@ -145,5 +150,39 @@ public class SeguimientoService {
     public record DetalleSeguimiento(
             PortafolioSeguimiento portafolio,
             List<EvidenciaSeguimiento> evidencias) {
+    }
+
+    @Transactional(readOnly = true)
+    public DescargaSeguimiento descargarEvidencia(Long evidenciaId) {
+        if (evidenciaId == null || evidenciaId <= 0) {
+            throw new AccessDeniedException(
+                    "La evidencia no está disponible para tu cuenta."
+            );
+        }
+
+        var evidencia = evidenciaRepository.findById(evidenciaId)
+                .orElseThrow(() ->
+                        new AccessDeniedException(
+                                "La evidencia no está disponible para tu cuenta."
+                        )
+                );
+
+        accesoService.verificarAcceso(
+                evidencia.getPortafolio().getId()
+        );
+
+        Resource recurso = almacenamientoService.cargar(
+                evidencia.getClaveAlmacenamiento()
+        );
+
+        return new DescargaSeguimiento(
+                recurso,
+                evidencia.getNombreOriginal()
+        );
+    }
+
+    public record DescargaSeguimiento(
+            Resource recurso,
+            String nombreOriginal) {
     }
 }

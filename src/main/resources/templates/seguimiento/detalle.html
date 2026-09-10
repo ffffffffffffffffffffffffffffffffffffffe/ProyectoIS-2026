@@ -45,16 +45,26 @@
                     <th scope="col">Actividad</th>
                     <th scope="col">Archivo</th>
                     <th scope="col">Fecha</th>
+                    <th scope="col">Acción</th>
                 </tr>
                 </thead>
+
                 <tbody>
                 <tr th:each="evidencia : ${detalle.evidencias}">
                     <td th:text="${evidencia.titulo}"></td>
                     <td th:text="${evidencia.actividad}"></td>
                     <td th:text="${evidencia.nombreOriginal}"></td>
+
                     <td th:text="${#temporals.format(
-                        evidencia.fechaSubida, 'dd/MM/yyyy HH:mm'
-                    )}"></td>
+            evidencia.fechaSubida, 'dd/MM/yyyy HH:mm'
+        )}"></td>
+
+                    <td>
+                        <a class="boton boton-secundario"
+                           th:href="@{/seguimiento/evidencias/{id}/descargar(id=${evidencia.id})}">
+                            Descargar PDF
+                        </a>
+                    </td>
                 </tr>
                 </tbody>
             </table>
