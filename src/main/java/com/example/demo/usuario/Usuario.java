@@ -26,6 +26,9 @@ public class Usuario {
     @Column(nullable = false)
     private boolean activo = true;
 
+    @Column(name = "rut", unique = true, length = 10)
+    private String rut;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "usuario_rol",
@@ -44,6 +47,14 @@ public class Usuario {
         this.nombre = nombre;
         this.correo = correo;
         this.passwordHash = passwordHash;
+    }
+
+    public String getRut() {
+        return rut;
+    }
+
+    public void setRut(String rut) {
+        this.rut = RutValidator.normalizarYValidar(rut);
     }
 
     public Long getId() {

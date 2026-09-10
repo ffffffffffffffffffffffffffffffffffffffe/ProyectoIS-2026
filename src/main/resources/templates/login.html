@@ -5,36 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Ingresar | Prácticas pedagógicas</title>
     <link rel="stylesheet" th:href="@{/css/estilos.css}">
+    <script th:src="@{/js/login.js}" defer></script>
 </head>
 <body>
 <main class="login-contenedor">
-    <section class="tarjeta login-tarjeta">
+    <section class="tarjeta login-tarjeta login-compacto">
         <span class="etiqueta">Prácticas pedagógicas</span>
-        <h1>Ingresa a tu cuenta</h1>
+        <h1>Iniciar sesión</h1>
         <p class="texto-secundario">
-            Accede a la plataforma con tu correo y contraseña.
+            Ingresa con tu RUT y contraseña.
         </p>
 
         <p th:if="${param.error}" class="aviso error" role="alert">
-            No pudimos iniciar sesión. Revisa tu correo y contraseña.
+            No pudimos iniciar sesión. Revisa tu RUT y contraseña.
         </p>
 
         <p th:if="${param.logout}" class="aviso exito" role="status">
-            Cerraste sesión. Puedes ingresar con otra cuenta.
+            Cerraste sesión correctamente.
         </p>
 
         <p th:if="${param.expired}" class="aviso" role="status">
-            Tu sesión expiró. Ingresa nuevamente para continuar.
+            Tu sesión expiró. Ingresa nuevamente.
         </p>
 
         <form th:action="@{/login}" method="post">
             <div class="campo">
-                <label for="username">Correo electrónico</label>
+                <label for="username">RUT</label>
                 <input id="username"
                        name="username"
-                       type="email"
+                       type="text"
                        autocomplete="username"
-                       placeholder="nombre@ejemplo.com"
+                       maxlength="12"
+                       placeholder="12.345.678-5"
+                       spellcheck="false"
                        required>
             </div>
 
@@ -48,10 +51,43 @@
             </div>
 
             <button type="submit" class="ancho-completo">
-                Iniciar sesión
+                Ingresar
             </button>
         </form>
+
+        <button type="button"
+                id="abrir-recuperacion"
+                aria-haspopup="dialog"
+                aria-controls="dialogo-recuperacion"
+                style="display: block; width: auto; min-width: 0;
+               min-height: 0; padding: 2px; margin: 14px auto 0;
+               font-size: 12px; line-height: 1.2; border: none;
+               background: transparent; color: #2359b8;
+               box-shadow: none;">
+            ¿Olvidaste tu contraseña?
+        </button>
     </section>
 </main>
+
+<dialog id="dialogo-recuperacion"
+        class="dialogo-recuperacion"
+        aria-labelledby="titulo-recuperacion"
+        aria-describedby="descripcion-recuperacion">
+    <h2 id="titulo-recuperacion">Recuperar contraseña</h2>
+
+    <p id="descripcion-recuperacion" class="texto-secundario">
+        La recuperación de contraseña está temporalmente deshabilitada.
+        Contacta al administrador para solicitar ayuda.
+    </p>
+
+    <form method="dialog">
+        <button type="submit"
+                style="display: block; width: auto; min-width: 0;
+               min-height: 0; padding: 4px 10px; margin: 16px auto 0;
+               font-size: 12px; line-height: 1.2; border-radius: 5px;">
+            Ingresar
+        </button>
+    </form>
+</dialog>
 </body>
 </html>

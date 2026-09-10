@@ -8,8 +8,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Locale;
-
 @Service
 public class UsuarioDetailsService implements UserDetailsService {
 
@@ -21,12 +19,18 @@ public class UsuarioDetailsService implements UserDetailsService {
 
     @Override
     @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(String correo) {
-        String correoNormalizado = correo.strip()
-                .toLowerCase(Locale.ROOT);
+    public UserDetails loadUserByUsername(String rutIngresado) {
+        String rutNormalizado;
 
-        Usuario usuario = usuarioRepository
-                .findByCorreo(correoNormalizado)
+        try {
+            rutNormalizado = RutValidator.normalizarYValidar(rutIngresado);
+        } catch (IllegalArgumentException exception) {
+            throw new UsernameNotFoundException(
+                    "Credenciales incorrectas."
+            );
+        }
+
+        Usuario usuario = usuarioRepository.findByRut(rutNormalizado)
                 .orElseThrow(() ->
                         new UsernameNotFoundException(
                                 "Credenciales incorrectas."
@@ -39,6 +43,8 @@ public class UsuarioDetailsService implements UserDetailsService {
                 ))
                 .toList();
 
+        // El ingreso utiliza RUT. Los servicios existentes siguen
+        // identificando la sesión internamente por correo.
         return User.withUsername(usuario.getCorreo())
                 .password(usuario.getPasswordHash())
                 .authorities(permisos)

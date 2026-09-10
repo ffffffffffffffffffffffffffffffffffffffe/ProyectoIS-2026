@@ -57,4 +57,28 @@ public class UsuarioService {
 
         return usuarioRepository.save(usuario).getId();
     }
+
+    @Transactional
+    public Long registrarConRut(
+            @NotBlank @Size(max = 100) String nombre,
+            @NotBlank @Email @Size(max = 150) String correo,
+            @NotBlank @Size(min = 8, max = 72) String password,
+            @NotBlank @Size(max = 12) String rut) {
+
+        String rutNormalizado = RutValidator.normalizarYValidar(rut);
+
+        if (usuarioRepository.existsByRut(rutNormalizado)) {
+            throw new IllegalArgumentException(
+                    "Ya existe un usuario con ese RUT."
+            );
+        }
+
+        // Conserva las comprobaciones de correo y contraseña existentes.
+        Long id = registrar(nombre, correo, password);
+
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow();
+        usuario.setRut(rutNormalizado);
+
+        return usuarioRepository.saveAndFlush(usuario).getId();
+    }
 }

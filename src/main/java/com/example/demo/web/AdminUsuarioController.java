@@ -49,10 +49,11 @@ public class AdminUsuarioController {
         }
 
         try {
-            usuarioService.registrar(
+            usuarioService.registrarConRut(
                     form.getNombre(),
                     form.getCorreo(),
-                    form.getPassword()
+                    form.getPassword(),
+                    form.getRut()
             );
         } catch (IllegalArgumentException exception) {
             bindingResult.reject("registro", exception.getMessage());
@@ -62,7 +63,7 @@ public class AdminUsuarioController {
             bindingResult.reject(
                     "registro",
                     "No se pudo registrar el usuario. "
-                            + "Comprueba que el correo no esté registrado."
+                            + "Comprueba que el correo o RUT no estén registrados."
             );
             form.setPassword(null);
             return "admin/usuario-nuevo";
