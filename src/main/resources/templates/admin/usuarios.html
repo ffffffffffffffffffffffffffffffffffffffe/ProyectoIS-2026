@@ -10,6 +10,12 @@
 <header th:replace="~{fragmentos/barra :: barra}"></header>
 
 <main class="contenedor">
+    <p th:if="${mensaje}"
+       class="aviso exito"
+       role="status"
+       th:text="${mensaje}">
+    </p>
+
     <span class="etiqueta">Administración</span>
 
     <div class="encabezado-pagina">
@@ -52,6 +58,7 @@
                     <th scope="col">Correo</th>
                     <th scope="col">Roles</th>
                     <th scope="col">Estado</th>
+                    <th scope="col">Acciones</th>
                 </tr>
                 </thead>
 
@@ -77,6 +84,12 @@
                               th:text="${miembro.activo}
                                   ? 'Activo' : 'Inactivo'">
                         </span>
+                    </td>
+                    <td>
+                        <a class="boton boton-secundario"
+                           th:href="@{/admin/usuarios/{id}/password(id=${miembro.id})}">
+                            Restablecer contraseña
+                        </a>
                     </td>
                 </tr>
                 </tbody>

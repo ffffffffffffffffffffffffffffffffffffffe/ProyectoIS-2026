@@ -13,6 +13,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.demo.usuario.UsuarioRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
+import com.example.demo.usuario.RestablecerPasswordService;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -23,12 +26,15 @@ public class AdminUsuarioController {
 
     private final UsuarioService usuarioService;
     private final UsuarioRepository usuarioRepository;
+    private final RestablecerPasswordService restablecerPasswordService;
 
     public AdminUsuarioController(
             UsuarioService usuarioService,
-            UsuarioRepository usuarioRepository) {
+            UsuarioRepository usuarioRepository,
+            RestablecerPasswordService restablecerPasswordService) {
         this.usuarioService = usuarioService;
         this.usuarioRepository = usuarioRepository;
+        this.restablecerPasswordService = restablecerPasswordService;
     }
 
     @GetMapping("/nuevo")
@@ -105,5 +111,50 @@ public class AdminUsuarioController {
             String correo,
             List<String> roles,
             boolean activo) {
+    }
+
+    @GetMapping("/{id}/password")
+    public String mostrarRestablecimiento(
+            @PathVariable("id") Long id,
+            Model model) {
+
+        var usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "El usuario no existe."
+                ));
+
+        model.addAttribute("usuarioId", usuario.getId());
+        model.addAttribute("nombreMiembro", usuario.getNombre());
+        model.addAttribute("correoMiembro", usuario.getCorreo());
+
+        return "admin/usuario-password";
+    }
+
+    @PostMapping("/{id}/password")
+    public String restablecerPassword(
+            @PathVariable("id") Long id,
+            @RequestParam("nuevaPassword") String nuevaPassword,
+            @RequestParam("confirmacion") String confirmacion,
+            RedirectAttributes redirectAttributes) {
+
+        try {
+            restablecerPasswordService.restablecer(
+                    id, nuevaPassword, confirmacion
+            );
+        } catch (IllegalArgumentException exception) {
+            redirectAttributes.addFlashAttribute(
+                    "error", exception.getMessage()
+            );
+            return "redirect:/admin/usuarios/" + id + "/password";
+        }
+
+        redirectAttributes.addFlashAttribute(
+                "mensaje",
+                "Contraseña actualizada. "
+                        + "El usuario deberá iniciar sesión nuevamente."
+        );
+
+        return "redirect:/admin/usuarios";
     }
 }

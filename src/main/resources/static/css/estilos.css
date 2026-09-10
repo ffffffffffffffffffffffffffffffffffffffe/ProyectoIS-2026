@@ -499,4 +499,66 @@ textarea:focus {
         background: transparent;
         text-decoration: underline;
     }
+
+    .tarjeta-password {
+        max-width: 520px;
+        margin: 0 auto;
+    }
+
+    .tarjeta-password h1 {
+        font-size: 1.65rem;
+    }
+
+    .acciones-password {
+        margin-top: 22px;
+    }
+
+    /* Botones compactos en toda la plataforma */
+    button,
+    .boton,
+    .boton-secundario {
+        width: auto;
+        min-width: 0;
+        min-height: 0;
+        padding: 4px 10px;
+        font-size: 12px;
+        line-height: 1.2;
+        border-radius: 5px;
+    }
+
+    /* Evita que los botones ocupen todo el ancho */
+    button.ancho-completo,
+    .boton.ancho-completo {
+        width: auto;
+    }
+
+    /* Separación entre botones */
+    .acciones {
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .acciones > form {
+        margin: 0;
+    }
+
+    /* Menú del usuario en la barra */
+    .menu-usuario summary {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+
+    /* Mantiene el área de cierre de sesión fácil de seleccionar */
+    .menu-usuario-panel .opcion-cerrar {
+        width: 100%;
+        padding: 8px 10px;
+    }
+
+    /* Recuperación como enlace, sin recuadro */
+    .login-compacto .enlace-recuperacion {
+        padding: 2px;
+        border: none;
+        background: transparent;
+        font-size: 12px;
+    }
 }
