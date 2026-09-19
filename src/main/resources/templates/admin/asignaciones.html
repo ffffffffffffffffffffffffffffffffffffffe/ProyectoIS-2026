@@ -72,16 +72,26 @@
 
             <div class="campo">
                 <label for="asignatura">Asignatura</label>
-                <input id="asignatura" name="asignatura"
-                       type="text" maxlength="100"
-                       placeholder="Ej.: Práctica pedagógica" required>
+                <select id="asignatura" name="asignatura" required>
+                    <option value="">Selecciona una práctica</option>
+
+                    <option th:each="asignatura : ${asignaturasDisponibles}"
+                            th:value="${asignatura}"
+                            th:text="${asignatura}">
+                    </option>
+                </select>
             </div>
 
             <div class="campo">
-                <label for="periodo">Periodo</label>
-                <input id="periodo" name="periodo"
-                       type="text" maxlength="20"
-                       placeholder="Ej.: 2026-2" required>
+                <label for="periodo">Período</label>
+                <select id="periodo" name="periodo" required>
+                    <option value="">Selecciona un período</option>
+
+                    <option th:each="periodo : ${periodosDisponibles}"
+                            th:value="${periodo}"
+                            th:text="${periodo}">
+                    </option>
+                </select>
             </div>
 
             <button type="submit">Guardar asignación</button>

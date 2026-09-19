@@ -27,24 +27,28 @@
         <form th:action="@{/portafolios}" method="post">
             <div class="campo">
                 <label for="asignatura">Asignatura</label>
-                <input id="asignatura"
-                       name="asignatura"
-                       type="text"
-                       th:value="${asignaturaIngresada}"
-                       placeholder="Ej.: Práctica pedagógica"
-                       maxlength="100"
-                       required>
+                <select id="asignatura" name="asignatura" required>
+                    <option value="">Selecciona una práctica</option>
+
+                    <option th:each="asignatura : ${asignaturasDisponibles}"
+                            th:value="${asignatura}"
+                            th:text="${asignatura}"
+                            th:selected="${asignatura == asignaturaIngresada}">
+                    </option>
+                </select>
             </div>
 
             <div class="campo">
-                <label for="periodo">Periodo de práctica</label>
-                <input id="periodo"
-                       name="periodo"
-                       type="text"
-                       th:value="${periodoIngresado}"
-                       placeholder="Ej.: 2026-2"
-                       maxlength="20"
-                       required>
+                <label for="periodo">Período de práctica</label>
+                <select id="periodo" name="periodo" required>
+                    <option value="">Selecciona un período</option>
+
+                    <option th:each="periodo : ${periodosDisponibles}"
+                            th:value="${periodo}"
+                            th:text="${periodo}"
+                            th:selected="${periodo == periodoIngresado}">
+                    </option>
+                </select>
             </div>
 
             <button type="submit">Crear portafolio</button>

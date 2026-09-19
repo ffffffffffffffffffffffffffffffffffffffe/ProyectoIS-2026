@@ -92,6 +92,7 @@ public class AdminUsuarioController {
                 .map(usuario -> new MiembroFila(
                         usuario.getId(),
                         usuario.getNombre(),
+                        usuario.getRut(),
                         usuario.getCorreo(),
                         usuario.getRoles().stream()
                                 .map(rol -> rol.getNombre())
@@ -108,6 +109,7 @@ public class AdminUsuarioController {
     public record MiembroFila(
             Long id,
             String nombre,
+            String rut,
             String correo,
             List<String> roles,
             boolean activo) {

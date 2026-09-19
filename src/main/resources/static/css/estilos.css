@@ -382,7 +382,7 @@ textarea:focus {
     .contenedor {
         margin-top: 28px;
     }
-
+}
     .login-compacto {
         max-width: 370px;
         padding: 26px;
@@ -560,5 +560,239 @@ textarea:focus {
         border: none;
         background: transparent;
         font-size: 12px;
+    }
+/* Inicio con navegación lateral */
+.pagina-inicio {
+    background: #f3f6fa;
+}
+
+.panel-inicio {
+    display: grid;
+    grid-template-columns: 235px minmax(0, 1fr);
+    min-height: calc(100dvh - 80px);
+}
+
+.lateral-inicio {
+    min-width: 0;
+    padding: 28px 16px;
+    background: #ffffff;
+    border-right: 1px solid #dde5ef;
+}
+
+.lateral-encabezado {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 0 10px 24px;
+}
+
+.lateral-titulo {
+    color: #172b3a;
+    font-size: .95rem;
+    font-weight: 750;
+}
+
+.lateral-alternar {
+    display: none;
+}
+
+.lateral-navegacion {
+    display: grid;
+    gap: 6px;
+}
+
+.lateral-navegacion[hidden] {
+    display: none;
+}
+
+.lateral-grupo {
+    display: grid;
+    gap: 6px;
+    margin-top: 18px;
+}
+
+.lateral-categoria {
+    margin: 0 12px 6px;
+    color: #5b6b7a;
+    font-size: .7rem;
+    font-weight: 750;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+}
+
+.lateral-enlace {
+    display: block;
+    padding: 10px 12px;
+    border-radius: 8px;
+    color: #43566a;
+    font-size: .875rem;
+    font-weight: 550;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+}
+
+.lateral-enlace:hover {
+    color: #19458f;
+    background: #f0f5fc;
+}
+
+.lateral-enlace.seleccionado {
+    color: #19458f;
+    background: #e8f0ff;
+    font-weight: 750;
+    box-shadow: inset 3px 0 #2359b8;
+}
+
+.contenido-inicio {
+    width: 100%;
+    max-width: 1250px;
+    min-width: 0;
+    margin: 0 auto;
+    padding: 36px clamp(20px, 4vw, 52px);
+}
+
+.bienvenida-inicio {
+    padding-bottom: 28px;
+    margin-bottom: 28px;
+    border-bottom: 1px solid #dde5ef;
+}
+
+.bienvenida-inicio h1 {
+    font-size: clamp(1.65rem, 3vw, 2.2rem);
+    overflow-wrap: anywhere;
+}
+
+.bienvenida-inicio p {
+    max-width: 650px;
+    margin-bottom: 14px;
+}
+
+.perfiles-inicio {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.perfiles-inicio .insignia {
+    margin: 0;
+}
+
+.seccion-inicio-encabezado {
+    margin-bottom: 20px;
+}
+
+.seccion-inicio-encabezado h2 {
+    margin-bottom: 4px;
+}
+
+.seccion-inicio-encabezado p {
+    margin: 0;
+    font-size: .9rem;
+}
+
+.accesos-inicio {
+    display: grid;
+    grid-template-columns: repeat(
+        auto-fit, minmax(min(100%, 245px), 1fr)
+    );
+    gap: 18px;
+}
+
+.acceso-inicio {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: 0;
+    padding: 24px;
+    border: 1px solid #dde5ef;
+    border-radius: 14px;
+    background: white;
+    box-shadow: 0 4px 16px rgb(23 43 58 / 3%);
+}
+
+.acceso-distintivo {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    margin-bottom: 18px;
+    border-radius: 10px;
+    background: #edf3ff;
+    color: #2359b8;
+    font-size: .9rem;
+    font-weight: 800;
+}
+
+.acceso-inicio h3 {
+    margin: 0 0 8px;
+    font-size: 1rem;
+}
+
+.acceso-inicio p {
+    margin: 0 0 22px;
+    color: #5b6b7a;
+    font-size: .875rem;
+}
+
+/* Botones pequeños, sin estirarse al ancho de la tarjeta */
+.pagina-inicio .acceso-inicio > .boton {
+    align-self: flex-start;
+    width: auto;
+    min-width: 0;
+    min-height: 0;
+    margin-top: auto;
+    padding: 5px 10px;
+    font-size: 12px;
+    line-height: 1.2;
+    border-radius: 5px;
+}
+
+.saltar-contenido {
+    position: fixed;
+    top: 8px;
+    left: 12px;
+    z-index: 200;
+    padding: 10px 14px;
+    background: #ffffff;
+    color: #19458f;
+    border: 1px solid #2359b8;
+    border-radius: 6px;
+    transform: translateY(-160%);
+}
+
+.saltar-contenido:focus {
+    transform: translateY(0);
+}
+
+@media (max-width: 800px) {
+    .panel-inicio {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .lateral-inicio {
+        padding: 14px 16px;
+        border-right: none;
+        border-bottom: 1px solid #dde5ef;
+    }
+
+    .lateral-encabezado {
+        margin: 0;
+    }
+
+    .lateral-alternar:not([hidden]) {
+        display: inline-block;
+    }
+
+    .lateral-navegacion {
+        margin-top: 16px;
+    }
+
+    .contenido-inicio {
+        padding: 26px 18px;
+    }
+
+    .acceso-inicio {
+        padding: 20px;
     }
 }

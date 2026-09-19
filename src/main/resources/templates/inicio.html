@@ -5,88 +5,199 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Inicio | Prácticas pedagógicas</title>
     <link rel="stylesheet" th:href="@{/css/estilos.css}">
+    <script th:src="@{/js/inicio.js}" defer></script>
 </head>
-<body>
+<body class="pagina-inicio">
+<a class="saltar-contenido" href="#contenido-principal">
+    Saltar al contenido
+</a>
+
 <header th:replace="~{fragmentos/barra :: barra}"></header>
 
-<main class="contenedor">
-    <span class="etiqueta">Tu espacio de trabajo</span>
-    <h1>Bienvenido a la plataforma</h1>
-    <p class="texto-secundario cuenta">
-        Sesión iniciada como <strong th:text="${correo}"></strong>
-    </p>
+<div class="panel-inicio">
 
-    <section th:if="${esResponsable}" class="cuadricula">
-        <article class="tarjeta">
-            <h2>Seguimiento de estudiantes</h2>
-            <p class="texto-secundario">
-                Consulta los portafolios y evidencias disponibles
-                según tus asignaciones.
-            </p>
-            <a class="boton" th:href="@{/seguimiento}">
-                Ver portafolios asignados
+    <aside class="lateral-inicio" aria-label="Navegación de la plataforma">
+        <div class="lateral-encabezado">
+            <span class="lateral-titulo">Mi espacio</span>
+
+            <button type="button"
+                    id="alternar-navegacion"
+                    class="boton-secundario lateral-alternar"
+                    aria-controls="navegacion-inicio"
+                    aria-expanded="true"
+                    hidden>
+                Ocultar menú
+            </button>
+        </div>
+
+        <nav id="navegacion-inicio" class="lateral-navegacion">
+            <a class="lateral-enlace seleccionado"
+               th:href="@{/}"
+               aria-current="page">
+                Inicio
             </a>
-        </article>
-    </section>
 
-    <section th:if="${esAdmin}" class="cuadricula">
-        <article class="tarjeta">
-            <h2>Miembros del sistema</h2>
-            <p class="texto-secundario">
-                Consulta los usuarios registrados, sus roles y su estado.
-            </p>
-            <div class="acciones">
-                <a class="boton" th:href="@{/admin/usuarios}">
-                    Ver miembros
+            <div th:if="${esAdmin}" class="lateral-grupo">
+                <p class="lateral-categoria">Administración</p>
+
+                <a class="lateral-enlace" th:href="@{/admin/usuarios}">
+                    Miembros del sistema
                 </a>
-                <a class="boton boton-secundario"
-                   th:href="@{/admin/usuarios/nuevo}">
-                    Crear usuario
+                <a class="lateral-enlace" th:href="@{/admin/roles}">
+                    Roles y permisos
+                </a>
+                <a class="lateral-enlace" th:href="@{/admin/asignaciones}">
+                    Asignaciones
                 </a>
             </div>
-        </article>
 
-        <article class="tarjeta">
-            <h2>Roles y acceso</h2>
+            <div th:if="${esEstudiante}" class="lateral-grupo">
+                <p class="lateral-categoria">Mi práctica</p>
+
+                <a class="lateral-enlace" th:href="@{/portafolios}">
+                    Mis portafolios
+                </a>
+            </div>
+
+            <div th:if="${esResponsable}" class="lateral-grupo">
+                <p class="lateral-categoria">Acompañamiento</p>
+
+                <a class="lateral-enlace" th:href="@{/seguimiento}">
+                    Seguimiento de estudiantes
+                </a>
+            </div>
+        </nav>
+    </aside>
+
+    <main id="contenido-principal"
+          class="contenido-inicio"
+          tabindex="-1">
+
+        <section class="bienvenida-inicio">
+            <span class="etiqueta">Prácticas pedagógicas</span>
+
+            <h1 th:text="|Hola, ${nombreUsuarioActual}|">
+                Hola
+            </h1>
+
             <p class="texto-secundario">
-                Asigna o retira los roles de los usuarios.
+                Organiza tu trabajo y accede a las herramientas
+                disponibles para tu cuenta.
             </p>
-            <a class="boton" th:href="@{/admin/roles}">
-                Gestionar roles
-            </a>
-        </article>
 
-        <article class="tarjeta">
-            <h2>Asignaciones</h2>
+            <div class="perfiles-inicio" aria-label="Áreas disponibles">
+                <span th:if="${esAdmin}" class="insignia">
+                    Administración
+                </span>
+                <span th:if="${esEstudiante}" class="insignia">
+                    Estudiante
+                </span>
+                <span th:if="${esResponsable}" class="insignia">
+                    Seguimiento
+                </span>
+            </div>
+        </section>
+
+        <section th:if="${esAdmin or esEstudiante or esResponsable}"
+                 aria-labelledby="titulo-accesos">
+            <div class="seccion-inicio-encabezado">
+                <h2 id="titulo-accesos">Accesos rápidos</h2>
+                <p class="texto-secundario">
+                    Elige una acción para comenzar.
+                </p>
+            </div>
+
+            <div class="accesos-inicio">
+
+                <article th:if="${esAdmin}" class="acceso-inicio">
+                    <span class="acceso-distintivo" aria-hidden="true">U</span>
+                    <h3>Crear usuario</h3>
+                    <p>
+                        Registra una cuenta con RUT y correo
+                        para ingresar a la plataforma.
+                    </p>
+                    <a class="boton" th:href="@{/admin/usuarios/nuevo}">
+                        Crear usuario
+                    </a>
+                </article>
+
+                <article th:if="${esAdmin}" class="acceso-inicio">
+                    <span class="acceso-distintivo" aria-hidden="true">M</span>
+                    <h3>Miembros del sistema</h3>
+                    <p>
+                        Consulta las cuentas, sus roles y su estado,
+                        o restablece una contraseña.
+                    </p>
+                    <a class="boton boton-secundario"
+                       th:href="@{/admin/usuarios}">
+                        Ver miembros
+                    </a>
+                </article>
+
+                <article th:if="${esAdmin}" class="acceso-inicio">
+                    <span class="acceso-distintivo" aria-hidden="true">R</span>
+                    <h3>Roles y permisos</h3>
+                    <p>
+                        Asigna o retira los roles que determinan
+                        las opciones de cada usuario.
+                    </p>
+                    <a class="boton boton-secundario"
+                       th:href="@{/admin/roles}">
+                        Gestionar roles
+                    </a>
+                </article>
+
+                <article th:if="${esAdmin}" class="acceso-inicio">
+                    <span class="acceso-distintivo" aria-hidden="true">A</span>
+                    <h3>Asignaciones</h3>
+                    <p>
+                        Asocia responsables a estudiantes
+                        según su asignatura y período.
+                    </p>
+                    <a class="boton boton-secundario"
+                       th:href="@{/admin/asignaciones}">
+                        Gestionar asignaciones
+                    </a>
+                </article>
+
+                <article th:if="${esEstudiante}" class="acceso-inicio">
+                    <span class="acceso-distintivo" aria-hidden="true">P</span>
+                    <h3>Mis portafolios</h3>
+                    <p>
+                        Crea un portafolio o abre uno existente
+                        para consultar y subir evidencias.
+                    </p>
+                    <a class="boton" th:href="@{/portafolios}">
+                        Abrir portafolios
+                    </a>
+                </article>
+
+                <article th:if="${esResponsable}" class="acceso-inicio">
+                    <span class="acceso-distintivo" aria-hidden="true">S</span>
+                    <h3>Seguimiento de estudiantes</h3>
+                    <p>
+                        Revisa los portafolios y descarga las evidencias
+                        de los estudiantes que tienes asignados.
+                    </p>
+                    <a class="boton" th:href="@{/seguimiento}">
+                        Ver seguimiento
+                    </a>
+                </article>
+
+            </div>
+        </section>
+
+        <section th:if="${!esAdmin and !esEstudiante and !esResponsable}"
+                 class="tarjeta">
+            <h2>Tu cuenta está disponible</h2>
             <p class="texto-secundario">
-                Gestiona los responsables del seguimiento de cada estudiante.
+                Tu cuenta todavía no tiene un rol con acceso a estas
+                secciones. Contacta al administrador para revisar
+                tus permisos.
             </p>
-            <a class="boton" th:href="@{/admin/asignaciones}">
-                Gestionar asignaciones
-            </a>
-        </article>
+        </section>
 
-    </section>
-
-    <section th:if="${esEstudiante}" class="cuadricula">
-        <article class="tarjeta">
-            <h2>Mis portafolios</h2>
-            <p class="texto-secundario">
-                Crea y consulta tus portafolios de práctica.
-            </p>
-            <a class="boton" th:href="@{/portafolios}">
-                Ver mis portafolios
-            </a>
-        </article>
-    </section>
-
-    <section th:if="${!esAdmin and !esEstudiante and !esResponsable}"
-             class="tarjeta bloque-separado">
-        <h2>Tu cuenta está disponible</h2>
-        <p class="texto-secundario">
-            Las opciones de seguimiento estarán disponibles próximamente.
-        </p>
-    </section>
-</main>
+    </main>
+</div>
 </body>
 </html>

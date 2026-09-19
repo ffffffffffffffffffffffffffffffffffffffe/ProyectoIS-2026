@@ -55,6 +55,7 @@
                 <thead>
                 <tr>
                     <th scope="col">Nombre</th>
+                    <th scope="col">RUT</th>
                     <th scope="col">Correo</th>
                     <th scope="col">Roles</th>
                     <th scope="col">Estado</th>
@@ -65,6 +66,7 @@
                 <tbody>
                 <tr th:each="miembro : ${miembros}">
                     <td th:text="${miembro.nombre}"></td>
+                    <td th:text="${miembro.rut != null ? miembro.rut : 'Sin registrar'}"></td>
                     <td th:text="${miembro.correo}"></td>
                     <td>
                         <span th:if="${#lists.isEmpty(miembro.roles)}"
