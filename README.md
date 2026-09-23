@@ -299,3 +299,15 @@ Comprueba:
 - Que corresponda al estudiante correcto.
 - Que coincidan asignatura y período.
 - Que el usuario tenga el rol correspondiente a la relación asignada.
+
+
+##Datos de prueba
+admin2	21668947-K
+Administrador inicial	21655745-K
+estudiante prueba	14093995-1
+estudiante1	22910371-7
+estudiante2	21735441-2
+profesor1	11150160-2
+tutor prueba	25998539-0
+
+Contraseña: 12345678
